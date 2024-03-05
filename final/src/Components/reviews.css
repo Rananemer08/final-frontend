@@ -31,7 +31,45 @@
   .review p:first-child {
     font-weight: bold;
   }
-
+  .Reviews-title-line {
+    width: 100%;
+    height: 2px;
+    background-color: #ccc;
+    margin-top: 150px;
+  }
+  
+  .Reviews-title {
+    margin-top: 20px;
+  }
+  .Reviews-title-create {
+    color: #2a74ed;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .Reviews {
+    margin-top: 20px;
+  }
+  
+  .review {
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .review p {
+    margin: 0;
+  }
+  
+  .review p:first-child {
+    font-weight: bold;
+  }
+  
+  
+  
+  
+  
   @media only screen and (max-width: 380px) {
     .Reviews {
       display: flex;

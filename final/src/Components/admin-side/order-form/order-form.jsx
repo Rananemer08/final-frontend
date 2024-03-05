@@ -20,16 +20,20 @@ const OrderForm = () => {
   }, [refreshPage]);
 
   const deleteOrder = async (id) => {
+    console.log(`Attempting to delete order with ID: ${id}`);
     try {
       const response = await axios.delete(
-         `http://localhost:4000/api/orders/${id}`
+        
+        `http://localhost:4000/api/orders/${id}`
+        
       );
-      console.log('aaadadfg',response.data);
+      console.log('Server response after deletion', response.data);
       refPage("a");
     } catch (error) {
-      console.log(error);
+      console.error('Error deleting order:', error);
     }
   };
+  
 
   const refPage = (refresh) => {
     setRefreshPage(refreshPage + refresh);

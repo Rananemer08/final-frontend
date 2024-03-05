@@ -30,7 +30,7 @@ function Reviews() {
           </div>
         ))}
       </div>
-      <AddReview/>
+      {/* <AddReview/> */}
     </div>
   );
 }

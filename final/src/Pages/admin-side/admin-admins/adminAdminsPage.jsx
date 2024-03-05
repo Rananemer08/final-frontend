@@ -15,7 +15,7 @@ const AdminsPage = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       const response = await axios.get(
-        "http://localhost:4000/api/admins"
+        "http://localhost:4000/api/users"
       );
       setAdmins(response.data.data);
       console.log("hayde el response", response.data.data);

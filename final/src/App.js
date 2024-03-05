@@ -36,7 +36,22 @@ import AccessDenied from "./AccessDenied.jsx";
 import AdminForm from "./Pages/admin-side/admin-admins/adminAdminsPage.jsx"
 import AdminProductsPage from "./Pages/admin-side/admin-products/adminProductsPage.jsx";
 // import Sidebar from "./Components/admin-side/sidebar/sidebar.jsx"
-import AddREVIEW from "./Components/addreview.jsx"
+import AddREVIEW from "./Components/addreview.jsx";
+// import AdminLogin from "./Pages/admin-side/admin-login/adminLogin.jsx"
+
+
+
+// const AdminLayout = () => {
+//   return (
+//     <>
+//       <Sidebar />
+//       <div className="layout">
+//         {/* <Outlet /> */}
+//       </div>
+//     </>
+//   );
+// };
+
 function App() {
   const { admin } = useAuthContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -78,16 +93,24 @@ function App() {
             <Route path="/findus" element={<Findus />} />
             <Route path="/review" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
-          < Route path="/register" element={<RegisterPage />}/> 
-          <Route path="/admins" element={<AdminForm />} />
+          < Route path="/register" element={<RegisterPage />}/>
+
+
+
+          <Route path="/admin/admins" element={<AdminForm />} />
 
           <Route path="/accessDenied" element={<AccessDenied />} />
           {/* <Route path="admins" element={<AdminForm />} /> */}
-            <Route path="/categoriesAdmin" element={<AdminCategoriesPage />} />
-            <Route path="/blogsAdmin" element={<AdminBlogsPage />} />
-            <Route path="/carouselsAdmin" element={<AdminCarouselsPage />} />
-             {/* <Route path="ordersAdmin" element={<OrderForm />} />
-             <Route path="/admin/orderDetails/:id" element={<AdminOrder />} /> */}
+          {/* <Route path="adminlogin" element={<AdminLogin />} /> */}
+          {/* <Route
+        path="/admin"
+        element={admin ? <AdminLayout /> : <Navigate to="/adminlogin" />}
+      ></Route> */}
+            <Route path="/admin/categoriesAdmin" element={<AdminCategoriesPage />} />
+            <Route path="/admin/blogsAdmin" element={<AdminBlogsPage />} />
+            <Route path="/admin/carouselsAdmin" element={<AdminCarouselsPage />} />
+             <Route path="/admin/ordersAdmin" element={<OrderForm />} />
+             <Route path="/admin/orderDetails/:id" element={<AdminOrder />} />
         <Route path="/sidebar" element={<Sidebar />} /> 
         {/* <Route path="productsAdmin" element={<AdminProductsPage />} /> */}
     

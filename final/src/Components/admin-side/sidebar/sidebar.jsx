@@ -27,12 +27,13 @@ import ProductIcon from "@mui/icons-material/Inventory";
 import OrderIcon from "@mui/icons-material/ProductionQuantityLimits";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
-import { useLogout } from "../../../hooks/useLogout";
+// import { useLogout } from "../../../hooks/useLogout";
 import AdminBackground from '../../../assets/admin-background.jpg'
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
+
   width: drawerWidth,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -101,7 +102,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const { logout } = useLogout();
+  // const { logout } = useLogout();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -129,7 +130,7 @@ export default function MiniDrawer() {
     "categoriesAdmin",
     "collectionsAdmin",
     // "productsAdmin",
-    // "ordersAdmin",
+    "ordersAdmin",
   ];
 
   return (
@@ -202,9 +203,9 @@ export default function MiniDrawer() {
           ))}
 
           <ListItem
-            onClick={() => {
-              logout();
-            }}
+            // onClick={() => {
+            //   logout();
+            // }}
             disablePadding
             sx={{ display: "block" }}
           >

@@ -1,106 +1,101 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-// import { addToCart } from "../../Redux/cartSlice";
 import Swal from "sweetalert2";
-// import "./singleproductpage.css";
 
-const Singleproductpage = () => {
-  const { productID } = useParams();
-  const [product, setProduct] = useState(null);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [reviewContent, setReviewContent] = useState("");
-;
-  const token = localStorage.getItem("token");
-  const userId = token ? JSON.parse(atob(token.split(".")[1])).id : null;
-  
+const SingleProductPage = () => {
+ const { productID } = useParams();
+ const [product, setProduct] = useState(null);
+ const [showReviewModal, setShowReviewModal] = useState(false);
+ const [reviewContent, setReviewContent] = useState("");
+ const [token, setToken] = useState(localStorage.getItem("token"));
+ const [userId, setUserId] = useState(
+    token ? JSON.parse(atob(token.split(".")[1])).id : null
+ );
 
-  useEffect(() => {
+ const navigate = useNavigate();
+
+ useEffect(() => {
     fetchProduct(productID);
-  }, [productID]);
+ }, [productID]);
 
-  const fetchProduct = (productId) => {
-    axios
-      .get(`http://localhost:4000/api/products/${productId}`)
-      .then((res) => {
-        console.log(res.data);
-        setProduct(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
+ const fetchProduct = async (productId) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/api/products/${productId}`);
+      setProduct(res.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong while fetching the product.',
       });
-  };
-
-//   const handleAddToCart = () => {
-//     dispatch(addToCart(product));
-
-//     Swal.fire({
-//       title: "Added to cart.",
-//       text: "Want to view your cart?",
-//       icon: "success",
-//       showDenyButton: true,
-//       confirmButtonText: "Yes",
-//       denyButtonText: "No",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         window.location.href = "/cart";
-//       }
-//     });
-//   };
-
-  const handleWriteReviewClick = () => {
-    if (!token) {
-      // Redirect to login page if not logged in
-      window.location.href = "/login";
-    } else {
-      setShowReviewModal(true);
     }
-  };
+ };
 
-  const handleCloseReviewModal = () => {
+ const handleWriteReviewClick = () => {
+    if (!product) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Product not found.',
+      });
+      return;
+    }
+    setShowReviewModal(true);
+ };
+
+ const handleCloseReviewModal = () => {
     setShowReviewModal(false);
     setReviewContent("");
-  };
+ };
 
-  const handleSubmitReview = async () => {
+ const handleSubmitReview = async () => {
+    if (!product || !product.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Product not found.',
+      });
+      return;
+    }
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URI}/review`,
+        "http://localhost:4000/api/reviews",
         {
           productId: product.id,
           message: reviewContent,
-          userId: userId, 
+          userId: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      console.log("Review creation response:", response.data);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Review submitted successfully.',
+      });
       handleCloseReviewModal();
       fetchProduct(productID);
     } catch (error) {
       console.error("Error creating review:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong while submitting the review.',
+      });
     }
-  };
+ };
 
-  return (
+ return (
     <div className="singleproductpage-main">
-      {/* {product && (
-        <div className="singleproductpage-product">
-          <img src={`${process.env.REACT_APP_BACKEND_URI}/${product.image}`} />
-          <div className="singleproductpage-product-info">
-            <h1>{product.name}</h1>
-
-            <p>{product.description}</p>
-            <h5 className="product-price">{product.price}$</h5>
-            <button disabled={isInCart} onClick={handleAddToCart}>
-              {isInCart ? "Already in cart" : "Add To Cart"}
-            </button>
-          </div>
-        </div>
-      )} */}
       <div className="Reviews-title-line"></div>
       <h2 className="Reviews-title">
-        Reviews ({product && product.Reviews.length})
+        Reviews ({product ? product.Reviews.length : 0})
       </h2>
       <h5 className="Reviews-title-create" onClick={handleWriteReviewClick}>
         Write A Review
@@ -143,7 +138,7 @@ const Singleproductpage = () => {
         </Modal.Footer>
       </Modal>
     </div>
-  );
+ );
 };
 
-export default Singleproductpage;
+export default SingleProductPage;

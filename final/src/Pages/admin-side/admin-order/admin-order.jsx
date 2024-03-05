@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Checkbox } from "@mui/material";
 import "./admin-order.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -21,14 +20,20 @@ const AdminOrder = () => {
       }
     };
     fetchSingleOrderById();
-  }, []);
-
+  }, [params.id]);
+  const calculateTotalPrice = () => {
+    return order.products?.reduce(
+      (accumulator, product) =>
+        accumulator + product.quantity * product.price,
+      0
+    ) || 0;
+  };
   return (
     <div className="order-details">
       <h2 className="order-details__title">Order Details</h2>
+
       <div className="order-details__receiver-info">
         <div className="infoOrderReceiverDetails">
-          {" "}
           <p>
             <strong>Receiver Name:</strong>{" "}
             {order.deliveryAddress?.receiverName}
@@ -39,7 +44,7 @@ const AdminOrder = () => {
         </div>
         <div className="infoOrderReceiverDetails">
           <p>
-            <strong>City:</strong> {order.deliveryAddress?.street}{" "}
+            <strong>City:</strong> {order.deliveryAddress?.city}{" "}
           </p>
           <p>
             <strong>Street:</strong> {order.deliveryAddress?.street}
@@ -55,12 +60,11 @@ const AdminOrder = () => {
           </p>
         </div>
       </div>
-      <br />
+
       <div className="order-details__products">
         <div className="order-details__products__Headings">
           <h3>Products</h3>
           <span>
-            {" "}
             <h3>Price</h3>
             <h3>Qty</h3>
             <h3>Color</h3>
@@ -71,30 +75,27 @@ const AdminOrder = () => {
 
         <ul>
           {order.products?.map((product, index) => (
-            <div className="order-details-products">
+            <div className="order-details-product" key={index}>
               <span className="product-name">
                 {product.productId?.collectionId?.name}
               </span>
 
-              <li key={index}>
+              <li>
                 <span className="product-image">
                   <img
                     width={200}
-                    src={
-                      `http://localhost:4000/api/${
-                      product?.productId?.image
-                    }`}
-                    alt=""
+                    src={`https://via.placeholder.com/150`} // Placeholder image
+                    alt={`Product ${index}`}
                   />
                 </span>
 
                 <span className="product-price">${product?.price}</span>
                 <span className="product-quantity">{product?.quantity}</span>
                 <span className="product-color">
-                  {product?.productId?.color}
+                  {product?.color || "N/A"}
                 </span>
                 <span className="product-fabric">
-                  {product?.productId?.fabric}
+                  {product?.fabric || "N/A"}
                 </span>
               </li>
               <hr />
@@ -103,10 +104,11 @@ const AdminOrder = () => {
           ))}
         </ul>
         <p className="order-details__total-price">
-          <strong>Total Price:</strong> ${order.totalAmount}
+          <strong>Total Price:</strong> ${calculateTotalPrice()}
         </p>
       </div>
     </div>
   );
 };
+
 export default AdminOrder;

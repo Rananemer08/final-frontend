@@ -12,7 +12,8 @@
     text-decoration: none !important;
   }
   .collection-price{
-    display: flex;
+    display: flex !important;
+ /* margin-right: 490px; */
   }
   .go-back-icon:hover{
     color: purple;

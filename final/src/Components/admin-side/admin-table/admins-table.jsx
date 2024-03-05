@@ -7,7 +7,7 @@ const AdminsForm = ({ admin, handleChangeObject, refresh }) => {
   const deleteAdmin = async (id) => {
     try {
       const response = await axios.delete(
-         `http://localhost:4000/api/admins/${id}`
+         `http://localhost:4000/api/users/${id}`
       );
       console.log(response.data);
       refresh("a");

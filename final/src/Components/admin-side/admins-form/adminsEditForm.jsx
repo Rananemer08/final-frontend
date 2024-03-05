@@ -1,42 +1,50 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./adminsEditForm.css";
 
-const EditAdminsForm = ({ refresh, setIsOpen, singleAdmins }) => {
-  const [data, setData] = useState(singleAdmins);
-  const [editedPassword, setEditedPassword] = useState(singleAdmins.password);
+const EditAdminsForm = ({ refresh, setIsOpen, singleAdmin }) => {
+  const [data, setData] = useState(singleAdmin ?? {});
+  const [editedPassword, setEditedPassword] = useState(singleAdmin?.password ?? "");
 
   useEffect(() => {
-    setData(singleAdmins);
-    setEditedPassword(singleAdmins.password);
-  }, [singleAdmins]);
+    setData(singleAdmin ?? {});
+    setEditedPassword(singleAdmin?.password ?? "");
+  }, [singleAdmin]);
 
-  const handleEditAdmins = async (e) => {
+  const handleEditAdmin = async (e) => {
     e.preventDefault();
     try {
-      const { password, ...updatedUserWithoutPassword } = data;
-      const updatedUserData = { ...updatedUserWithoutPassword };
-
-      if (password != editedPassword) {
-        updatedUserData.password = password;
+      const { _id, password, ...updatedUserWithoutPassword } = data;
+  
+      if (!_id) {
+        console.error("User ID is missing.");
+        return;
       }
-
+  
+      const updatedUserData = { ...updatedUserWithoutPassword };
+  
+      if (editedPassword !== "") {
+        updatedUserData.password = editedPassword;
+      }
+  
       const response = await axios.put(
-        
-          `http://localhost:4000/api/admins/${updatedUserWithoutPassword._id}`,
+        `http://localhost:4000/api/users/${updatedUserWithoutPassword._id}`,
         updatedUserData
       );
+      
+  
       console.log(response);
       refresh("a");
       setIsOpen(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error editing admin:", error);
     }
   };
+  
 
   return (
     <div className="form-container-edit-admins">
-      <form onSubmit={handleEditAdmins} className="form-edit-admins">
+      <form onSubmit={handleEditAdmin} className="form-edit-admins">
         <div className="inputs-container-edit">
           <div className="input-label-container-admins">
             <div className="input-label-container-admins-edit">
@@ -56,10 +64,8 @@ const EditAdminsForm = ({ refresh, setIsOpen, singleAdmins }) => {
                 Password
                 <input
                   type="password"
-                  value={data.password || ""}
-                  onChange={(e) => {
-                    setData({ ...data, password: e.target.value });
-                  }}
+                  value={editedPassword}
+                  onChange={(e) => setEditedPassword(e.target.value)}
                 />
               </label>
             </div>
