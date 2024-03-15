@@ -1,11 +1,14 @@
+import { Outlet, Navigate } from 'react-router-dom';
 
-import { Outlet, Navigate } from 'react-router-dom'
 export const ProtectedRouteAdmin = () => {
-    let auth = localStorage.getItem('authToken') || null;
-    let userType = localStorage.getItem('userType') || null; // Assuming userType is stored in localStorage
-   
-    return (
-        auth != null && userType === 'Admin' ? <Outlet /> : <Navigate to="/accessDenied" />
-       );
-   };
-   
+    const auth = localStorage.getItem('authToken');
+    const userType = localStorage.getItem('userType');
+
+    // If auth token exists and user type is admin, allow access
+    if (auth && userType === 'Admin') {
+        return <Outlet />;
+    } else {
+        // Otherwise, redirect to access denied page
+        return <Navigate to="/accessDenied" />;
+    }
+};

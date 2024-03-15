@@ -9,7 +9,9 @@ function Reviews() {
     const fetchReviews = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/reviews'); 
-        setReviews(response.data.data);
+console.log("res.data.daat",response.data.data); // Log the response data to check its structure
+setReviews(response.data.data);
+
       } catch (error) {
         console.error('Error fetching reviews:', error.message);
       }
@@ -23,12 +25,15 @@ function Reviews() {
       <div className="Reviews-title-line"></div>
       <h4 className="Reviews-title">Reviews</h4>
       <div className="Reviews">
-        {reviews.map((review) => (
-          <div key={review._id} className="review">
-            <p>{review.userId.username}</p>
-            <p>{review.text}</p>
-          </div>
-        ))}
+    {reviews.map((review) => (
+ <div key={review._id} className="review">
+    {/* Check if userId is not null before accessing its properties */}
+    <p>{review.userId ? `${review.userId.firstName} ${review.userId.lastName}` : 'Anonymous'}</p>
+    <p>{review.text}</p>
+ </div>
+))}
+
+
       </div>
       {/* <AddReview/> */}
     </div>

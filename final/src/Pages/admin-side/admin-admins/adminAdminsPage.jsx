@@ -5,20 +5,23 @@ import AdminsEditForm from "../../../Components/admin-side/admins-form/adminsEdi
 import axios from "axios";
 import "./adminAdminsPage.css";
 
+
 const AdminsPage = () => {
   const [admins, setAdmins] = useState([]);
   const [refreshPage, setRefreshPage] = useState("");
   const [open, setOpen] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
-  const [singleAdmins, setSingleAdmins] = useState({});
+  const [singleAdmin, setSingleAdmin] = useState({});
 
   useEffect(() => {
     const fetchAdmins = async () => {
-      const response = await axios.get(
-        "http://localhost:4000/api/users"
-      );
-      setAdmins(response.data.data);
-      console.log("hayde el response", response.data.data);
+      try {
+        const response = await axios.get("http://localhost:4000/api/users");
+        setAdmins(response.data.data);
+        console.log("Response data:", response.data.data);
+      } catch (error) {
+        console.error("Error fetching admins:", error);
+      }
     };
     fetchAdmins();
   }, [refreshPage]);
@@ -28,10 +31,11 @@ const AdminsPage = () => {
   };
 
   const handleChangeObject = (obj) => {
-    setSingleAdmins(obj);
+    setSingleAdmin(obj);
     setOpenEditForm(true);
-    console.log("editedObject", obj);
+    console.log("Edited object:", obj);
   };
+
   return (
     <div className="admins-page-container-admin">
       {open && <AdminsAddForm refresh={refPage} setIsOpen={setOpen} />}
@@ -39,7 +43,7 @@ const AdminsPage = () => {
         <AdminsEditForm
           setIsOpen={setOpenEditForm}
           refresh={refPage}
-          singleAdmins={singleAdmins}
+          singleAdmin={singleAdmin}
         />
       )}
       <div className="add-button-icon">
@@ -69,13 +73,11 @@ const AdminsPage = () => {
         </button>
       </div>
 
-      <>
-        <AdminsTable
-          admin={admins}
-          handleChangeObject={handleChangeObject}
-          refresh={refPage}
-        />
-      </>
+      <AdminsTable
+        admin={admins}
+        handleChangeObject={handleChangeObject}
+        refresh={refPage}
+      />
     </div>
   );
 };

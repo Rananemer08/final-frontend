@@ -77,7 +77,7 @@ const AdminOrder = () => {
           {order.products?.map((product, index) => (
             <div className="order-details-product" key={index}>
               <span className="product-name">
-                {product.productId?.collectionId?.name}
+                {product.productId?.name}
               </span>
 
               <li>

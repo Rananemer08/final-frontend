@@ -5,7 +5,7 @@ const BlogsAdmin = ({ blog, handleChangeObject, refresh }) => {
   const deleteBlog = async (id) => {
     try {
       const response = await axios.delete(
-        import.meta.env.VITE_API_ENDPOINT + `api/blogs/${blog._id}`
+         `http://localhost:4000/api/blogs/${blog._id}`
       );
       console.log(response.data);
       refresh("a");

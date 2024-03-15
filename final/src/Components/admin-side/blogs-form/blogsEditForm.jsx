@@ -4,7 +4,7 @@ import "./blogsEditForm.css";
 
 const EditBlogForm = ({ refresh, setIsOpen, singleBlog }) => {
   const [blogs, setBlogs] = useState([]);
-  console.log('console.log(singleBlog)',singleBlog)
+  console.log('console(singleBlog)',singleBlog)
   const [data, setData] = useState({
     title: "",
     text: "",
@@ -23,20 +23,18 @@ const EditBlogForm = ({ refresh, setIsOpen, singleBlog }) => {
     if (!data._id) {
       alert('Blog ID is not set. Cannot proceed with the edit.');
       return;
-   }
+    }
     try {
       const formData = new FormData();
       formData.append("image", data.image);
       formData.append("title", data.title);
       formData.append("text", data.text);
       formData.append("date", data.date);
-
-      const response = await axios.put(
-        console.log('it will not',data._id)
+  
+      await axios.put(
         `http://localhost:4000/api/blogs/${data._id}`,
         formData
       );
-      console.log(response);
       refresh("a");
       setIsOpen(false);
     } catch (error) {
@@ -47,6 +45,7 @@ const EditBlogForm = ({ refresh, setIsOpen, singleBlog }) => {
       }
     }
   };
+  
 
   return (
     <div className="form-container-edit-blog">
