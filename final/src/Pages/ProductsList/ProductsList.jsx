@@ -254,11 +254,9 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const location = useLocation();
 
   const { categoryId } = useParams();
-  
-console.log("categoryId:", categoryId);
-
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -274,54 +272,48 @@ console.log("categoryId:", categoryId);
         const response = await axios.get(`http://localhost:4000/api/categories/${categoryId}`);
         if (response.data.success && response.data.data) {
           setCategories(response.data.data.categoryName);
-          // setFilteredProducts(response.data.data);
-          // setCategories(response.data.data.products);
-          console.log("this is the category name",categoriesName)
         } else {
-
           console.error("Invalid or empty data received from the server:", response.data);
         }
       } catch (err) {
-        console.error("Error fetching products:", err);
+        console.error("Error fetching categories:", err);
       }
     };
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4000/api/products/category/${categoryId}`);
-      setProducts(response.data.data);
-      setFilteredProducts(response.data.data);
-    } catch (err) {
-      console.error('Error fetching products:', err);
+    const fetchProducts = async () => {
+      try {
+        let url = `http://localhost:4000/api/products`;
+        if (categoryId) {
+          url = `http://localhost:4000/api/products/category/${categoryId}`;
+        }
+
+        const response = await axios.get(url);
+        setProducts(response.data.data);
+        setFilteredProducts(response.data.data);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      }
+    };
+
+    getCategories();
+    fetchProducts();
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (searchTerm === '') {
+      setFilteredProducts(products);
+      return;
     }
+
+    const results = products.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProducts(results);
+  }, [searchTerm, products]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
-  if (!categoryId) {
-    console.error("Category ID is undefined");
-    // Handle the case where categoryId is undefined
-    return;
-  }
-
-  getCategories();
-  fetchProducts();
-}, []);
-
-useEffect(() => {
-  if (searchTerm === '') {
-    setFilteredProducts(products);
-    return;
-  }
-
-  const results = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  setFilteredProducts(results);
-}, [searchTerm]);
-
-const handleSearch = (e) => {
-  setSearchTerm(e.target.value);
-};
-  
-
   return (
     <Container>
       <Navbar />
