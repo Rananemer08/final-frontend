@@ -55,15 +55,11 @@ import AddREVIEW from "./Components/addreview.jsx";
 function App() {
   const { admin } = useAuthContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-     const token = localStorage.getItem('authToken') || null;
-     const userType = localStorage.getItem('userType') || null;
-     if (token !== null) {
-       setIsLoggedIn(true);
-       setUserType(userType);
-     }
+    const token = localStorage.getItem('authToken') || null;
+    if(token !== null)
+      setIsLoggedIn(true);
   }, []);
   return (
     <div className="App">

@@ -128,7 +128,7 @@ export default function MiniDrawer() {
     "carouselsAdmin",
     // "storiesAdmin",
     "categoriesAdmin",
-    "collectionsAdmin",
+    // "collectionsAdmin",
     // "productsAdmin",
     "ordersAdmin",
   ];

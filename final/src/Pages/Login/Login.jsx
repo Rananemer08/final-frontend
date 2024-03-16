@@ -177,25 +177,27 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/users/login', login);
-
+  
       // Store token securely (e.g., in local storage)
       localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('userType', response.data.user.userType);
-
-console.log(response.data.token)
-console.log("ndsjjs",response.data.user.userType)
+      
+      // Check the structure of response.data to access userType correctly
+      const userType = response.data.userType || response.data.user.userType;
+  
+      localStorage.setItem('userType', userType);
+  
       // Navigate to checkout or home page based on authorization
-      if (response.data.user.userType === 'Buyer') {
-        navigate('/checkout');
+      if (userType === 'admin') {
+        navigate('/sidebar'); // Navigate to sidebar for admin users
       } else {
-        navigate('/');
+        navigate('/checkout'); // Navigate to checkout page for non-admin users
       }
     } catch (error) {
       console.error('Login failed:', error.response.data); // Log detailed error response
       // Handle login errors here (e.g., display error message)
     }
   };
-
+  
   return (
     <Container className='container-login'>
       <Wrapper>

@@ -19,7 +19,7 @@ const CarouselAddForm = ({ refresh, setIsOpen }) => {
       fData.append("subtitle", data.subtitle);
 
       const response = await axios.post(
-        import.meta.env.VITE_API_ENDPOINT + "http://localhost:4000/api/carousels",
+        "http://localhost:4000/api/carousels",
         fData
       );
       console.log(response);

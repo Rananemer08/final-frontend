@@ -60,16 +60,7 @@ const EditCarouselForm = ({ refresh, setIsOpen, singleCarousel }) => {
               />
             </label>
           </div>
-          <label className="label-carousel-edit">
-              Carousel subtitle
-              <input
-                type="text"
-                value={data.subtitle || ""}
-                onChange={(e) => {
-                  setData({ ...data, subtitle: e.target.value });
-                }}
-              />
-            </label>
+          
           <div className="input-label-container-carousel-edit">
           <img
               src={`http://localhost:4000/${data.image}`}

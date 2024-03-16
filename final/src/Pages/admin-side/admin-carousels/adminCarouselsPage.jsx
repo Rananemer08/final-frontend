@@ -1,7 +1,7 @@
 import CarouselsCard from "../../../Components/admin-side/carousels-card/carouselsCard.jsx";
 import { useState, useEffect } from "react";
-import CarouselsAddForm from "../../../Components/admin-side/blogs-form/blogsAddForm.jsx";
-import CarouselsEditForm from "../../../Components/admin-side/blogs-form/blogsEditForm.jsx";
+import CarouselsAddForm from "../../../Components/admin-side/carousels-form/carouselsAddForm.jsx";
+import CarouselsEditForm from "../../../Components/admin-side/carousels-form/carouselsEditForm.jsx";
 import axios from "axios";
 import "./adminCarouselsPage.css";
 
